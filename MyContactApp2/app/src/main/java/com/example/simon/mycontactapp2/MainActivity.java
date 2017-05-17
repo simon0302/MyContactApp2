@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         while (res.moveToNext()) {
             //inside loop, append each column to the buffer
-            buffer.append(editName)
+            buffer.append(editName);
             buffer.append(editAddress);
             buffer.append(editEmail);
         }
