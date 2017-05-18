@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     EditText editEmail;
     EditText editNumber;
 
+    EditText editSearch;
+    String[] results;
+
     public static final String EXTRA_MESSAGE = "com.example.mycontactapp2.MESSAGE";
 
     @Override
@@ -35,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
         //add layout here
         editName = (EditText) findViewById(R.id.editText_name);
 
-        //not sure if correct
+        //tasks
         editAddress = (EditText) findViewById(R.id.editText_address);
         editEmail = (EditText) findViewById(R.id.editText_email);
         editNumber = (EditText) findViewById(R.id.editText_number);
+        editSearch = (EditText) findViewById(R.id.editText_search);
     }
 
     public void addData(View v) {
@@ -102,7 +106,39 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    public void searchEntry(View v){
+        Cursor res = myDb.getAllData();
+        if (res.getCount() == 0){
+            showMessage("Error", "No match found");
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+        res.moveToFirst();
 
+        int count = 0;
+
+        while(res.moveToNext()) {
+            if(res.getString(1).equals(editSearch.getText().toString())){
+
+                count++;
+                buffer.append("ID: " + count);
+
+                for(int i = 1; i<=4; i++){
+                    buffer.append(results[i-1]);
+                    buffer.append(res.getString(i));
+                    buffer.append("\n");
+                }
+                break;
+            }
+        }
+
+        if (buffer.toString().isEmpty()){
+            showMessage("Error", "Entry not found");
+            return;
+        }
+
+        showMessage("Data Found", buffer.toString());
+    }
 
 }
 

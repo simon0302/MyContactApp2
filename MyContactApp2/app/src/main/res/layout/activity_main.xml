@@ -129,4 +129,25 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="105dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="20dp"
+        android:onClick="searchEntry"
+        android:text="Search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <EditText
+        android:id="@+id/editText_search"
+        android:layout_width="221dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
