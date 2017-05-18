@@ -1,5 +1,6 @@
 package com.example.simon.mycontactapp2;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     EditText editAddress;
     EditText editEmail;
     EditText editNumber;
+
+    public static final String EXTRA_MESSAGE = "com.example.mycontactapp2.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void viewData(View v) {
 
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        Button editText = (Button) findViewById(R.id.view_contacts_button);
+        String message = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+
         Cursor res = myDb.getAllData();
         if (res.getCount() == 0) {
             showMessage("Error", "No data is found in the database");
@@ -77,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             buffer.append(editName);
             buffer.append(editAddress);
             buffer.append(editEmail);
+            buffer.append(editNumber);
         }
 
         //display the message using showMessage() call
@@ -91,5 +101,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setMessage(message);
         builder.show();
     }
+
+
+
 }
 
