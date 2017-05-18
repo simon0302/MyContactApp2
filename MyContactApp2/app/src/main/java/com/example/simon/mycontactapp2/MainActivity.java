@@ -1,6 +1,5 @@
 package com.example.simon.mycontactapp2;
 
-
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
-
-
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper myDb;
@@ -23,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     //tasks
     EditText editAddress;
     EditText editEmail;
-
+    EditText editNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +33,17 @@ public class MainActivity extends AppCompatActivity {
         editName = (EditText) findViewById(R.id.editText_name);
 
         //not sure if correct
-        // editAddress = (EditText) findViewById(R.id.editText_name);
-        // editEmail = (EditText) findViewById(R.id.editText_name);
+        editAddress = (EditText) findViewById(R.id.editText_address);
+        editEmail = (EditText) findViewById(R.id.editText_email);
+        editNumber = (EditText) findViewById(R.id.editText_number);
     }
 
     public void addData(View v) {
 
-        Log.d("MyContact", " addData() is used");
+        Log.d("MyContact", " addData() is adding contact");
 
         //this means that only the name is required, but not the address, age, or email
-        boolean isInserted = myDb.insertData(editName.getText().toString());
+        boolean isInserted = myDb.insertData(editName.getText().toString(), editAddress.getText().toString(), editEmail.getText().toString(), editNumber.getText().toString());
 
         if (isInserted == true) {
             Log.d("MyContact", "Success in inserting data");
