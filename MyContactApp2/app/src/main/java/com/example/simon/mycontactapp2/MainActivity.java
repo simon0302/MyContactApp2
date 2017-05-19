@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editSearch;
     String[] fields;
 
-    public static final String EXTRA_MESSAGE = "com.example.mycontactapp2.MESSAGE";
+    //public static final String EXTRA_MESSAGE = "com.example.mycontactapp2.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         editNumber = (EditText) findViewById(R.id.editText_number);
         editSearch = (EditText) findViewById(R.id.editText_search);
 
-        fields = new String[] {"ID: ", "Name: ", "Address: ", "Email: ", "Number: "};
+        fields = new String[] {"Name: ", "Address: ", "Email: ", "Number: "};
     }
 
     public void addData(View v) {
@@ -65,39 +65,36 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Failure Inserting Contact", Toast.LENGTH_SHORT).show();
         }
 
+        editName.setText("");
+        editAddress.setText("");;
+        editEmail.setText("");
+        editNumber.setText("");
     }
 
     public void viewData(View v) {
 
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        Button editText = (Button) findViewById(R.id.view_contacts_button);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-
+        Log.d("My Contact", "viewData is used");
         Cursor res = myDb.getAllData();
         if (res.getCount() == 0) {
-            showMessage("Error", "No data is found in the database");
-            //put a log d message and toast message
-            Log.d("MyContact", "Data not found in database");
-            Toast.makeText(MainActivity.this, "Data not found in database", Toast.LENGTH_SHORT).show();
-            return;
+            showMessage("Error", "Data not found");
         }
 
         StringBuffer buffer = new StringBuffer();
-        //set up  a loop with cursor (res) and using the method moveToNext()
+        res.moveToFirst();
 
         for (int i = 0; i < res.getCount(); i++) {
-            for (int j = 0; j < 4; j++) {
-                buffer.append(fields[j]);
+            for (int j = 1; j <=4; j++) {
+                buffer.append(fields[j-1]);
                 buffer.append(res.getString(j));
                 buffer.append("\n");
             }
+            buffer.append("\n");
             res.moveToNext();
         }
         //display the message using showMessage() call
-        showMessage("Data", buffer.toString());
+        showMessage("Contacts", buffer.toString());
     }
+
 
     private void showMessage(String title, String message) {
         //alertdialog.builder call
@@ -108,44 +105,32 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void searchEntry(View v){
+    public void searchEntry(View v) {
+        Log.d("My Contact app", "Search method used");
 
+        String search = editSearch.getText().toString();
         StringBuffer buffer = new StringBuffer();
         Cursor res = myDb.getAllData();
-
-        if (res.getCount() == 0){
-            showMessage("Error", "No match found");
-            return;
-        }
-
         res.moveToFirst();
 
-        int count = 0;
-
-      for (int i = 0; i < res.getCount(); i++) {
-          if (res.getString(1).equals(editSearch.getText().toString())) {
-
-              count++;
-              buffer.append("ID: " + count);
-
-              for (int j = 0; j < 4; j++) {
-                  buffer.append(fields[j]);
-                  buffer.append(res.getString(j));
-                  buffer.append("\n");
-              }
-              break;
-          }
-          res.moveToNext();
-
-      }
-
-        if (buffer.toString().isEmpty()){
-            showMessage("Error", "Entry not found");
-            return;
+        for (int i = 0; i < res.getCount(); i++) {
+            if (res.getString(1).equals(search)) {
+                for (int j = 1; j <=4; j++) {
+                    buffer.append(fields[j-1]);
+                    buffer.append(res.getString(j));
+                    buffer.append("\n");
+                }
+            }
+            buffer.append("\n");
+            res.moveToNext();
         }
 
-        showMessage("Data Found", buffer.toString());
+        if (buffer.toString().equals("")) {
+            showMessage("No match found", "");
+        } else {
+            showMessage(" Search Results", buffer.toString());
+        }
+        editSearch.setText("");
     }
-
 }
 
