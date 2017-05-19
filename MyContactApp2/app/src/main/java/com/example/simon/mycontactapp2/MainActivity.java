@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     EditText editSearch;
     String[] fields;
 
-    //public static final String EXTRA_MESSAGE = "com.example.mycontactapp2.MESSAGE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
