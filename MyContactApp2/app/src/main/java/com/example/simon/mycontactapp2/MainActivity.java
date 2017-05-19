@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editNumber;
 
     EditText editSearch;
-    String[] results;
+    String[] fields;
 
     public static final String EXTRA_MESSAGE = "com.example.mycontactapp2.MESSAGE";
 
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         editEmail = (EditText) findViewById(R.id.editText_email);
         editNumber = (EditText) findViewById(R.id.editText_number);
         editSearch = (EditText) findViewById(R.id.editText_search);
+
+        fields = new String[] {"ID: ", "Name: ", "Address: ", "Email: ", "Number: "};
     }
 
     public void addData(View v) {
@@ -85,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer buffer = new StringBuffer();
         //set up  a loop with cursor (res) and using the method moveToNext()
 
-        while (res.moveToNext()) {
-            //inside loop, append each column to the buffer
-            buffer.append(editName);
-            buffer.append(editAddress);
-            buffer.append(editEmail);
-            buffer.append(editNumber);
+        for (int i = 0; i < res.getCount(); i++) {
+            for (int j = 0; j < 4; j++) {
+                buffer.append(fields[j]);
+                buffer.append(res.getString(j));
+                buffer.append("\n");
+            }
+            res.moveToNext();
         }
-
         //display the message using showMessage() call
         showMessage("Data", buffer.toString());
     }
@@ -107,30 +109,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void searchEntry(View v){
+
+        StringBuffer buffer = new StringBuffer();
         Cursor res = myDb.getAllData();
+
         if (res.getCount() == 0){
             showMessage("Error", "No match found");
             return;
         }
-        StringBuffer buffer = new StringBuffer();
+
         res.moveToFirst();
 
         int count = 0;
 
-        while(res.moveToNext()) {
-            if(res.getString(1).equals(editSearch.getText().toString())){
+      for (int i = 0; i < res.getCount(); i++) {
+          if (res.getString(1).equals(editSearch.getText().toString())) {
 
-                count++;
-                buffer.append("ID: " + count);
+              count++;
+              buffer.append("ID: " + count);
 
-                for(int i = 1; i<=4; i++){
-                    buffer.append(results[i-1]);
-                    buffer.append(res.getString(i));
-                    buffer.append("\n");
-                }
-                break;
-            }
-        }
+              for (int j = 0; j < 4; j++) {
+                  buffer.append(fields[j]);
+                  buffer.append(res.getString(j));
+                  buffer.append("\n");
+              }
+              break;
+          }
+          res.moveToNext();
+
+      }
 
         if (buffer.toString().isEmpty()){
             showMessage("Error", "Entry not found");
