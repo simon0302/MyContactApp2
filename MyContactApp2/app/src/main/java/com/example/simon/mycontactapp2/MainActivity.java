@@ -1,6 +1,5 @@
 package com.example.simon.mycontactapp2;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
